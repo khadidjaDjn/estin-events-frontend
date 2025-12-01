@@ -1,0 +1,40 @@
+.admin-navbar {
+  width: 240px;
+  height: 100vh;
+  background-color: #1e1b4b;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.admin-navbar h2 {
+  font-size: 22px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.admin-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-nav-links li {
+  margin-bottom: 18px;
+}
+
+.admin-nav-links a {
+  text-decoration: none;
+  color: #c4b5fd;
+  font-size: 17px;
+  transition: 0.2s;
+}
+
+.admin-nav-links a:hover {
+  color: white;
+  padding-left: 5px;
+}

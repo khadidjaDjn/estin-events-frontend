@@ -1,0 +1,33 @@
+.admin-events-content {
+  padding: 20px 40px;
+}
+
+.admin-table {
+  width: 100%;
+  margin-top: 25px;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: #6d28d9;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.admin-table td {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.btn-view {
+  background: #6d28d9;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.btn-view:hover {
+  background: #5b21b6;
+}
