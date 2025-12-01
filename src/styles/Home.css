@@ -1,0 +1,27 @@
+.home-container {
+  padding: 40px; 
+  width: 100%;
+  margin: auto;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.home-title {
+  font-size: 2.4rem;
+  color: #1a1a1a;
+}
+
+.home-subtitle {
+  font-size: 1rem;
+  color: #616161;
+  margin-top: 8px;
+}
+
+.events-grid {
+  display: grid;
+  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

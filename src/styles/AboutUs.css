@@ -1,0 +1,43 @@
+.about-page {
+  min-height: 100vh;
+  background: #f5f3ff; /* same as EventDetails background */
+  font-family: "Inter", sans-serif;
+}
+
+/* Banner */
+.about-banner {
+  width: 100%;
+  height: 250px;
+  background: #8b5cf6; /* purple */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-title {
+  color: white;
+  font-size: 36px;
+  font-weight: 800;
+}
+
+/* Content */
+.about-content {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.about-section h2 {
+  font-size: 24px;
+  color: #8b5cf6; /* purple */
+  margin-bottom: 12px;
+}
+
+.about-section p {
+  font-size: 16px;
+  color: #4b5563; /* gray text */
+  line-height: 1.6;
+}
