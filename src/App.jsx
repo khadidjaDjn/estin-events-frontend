@@ -17,6 +17,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import AdminRecentEvents from "./admin/AdminRecentEvents";
 import AdminEvents from "./admin/AdminEvents";
 import AdminEventDetails from "./admin/AdminEventDetails";
+import AddEventPage from './admin/AddEventPage'
 
 function AppContent() {
   const location = useLocation();
@@ -44,6 +45,7 @@ function AppContent() {
         <Route path="/admin/recent-events" element={<AdminRecentEvents />} />
         <Route path="/admin/events" element={<AdminEvents />} />
         <Route path="/admin/events/:id" element={<AdminEventDetails />} />
+        <Route path="/admin/addEvent" element={<AddEventPage />} />
       </Routes>
 
       {/* Show footer only in user pages */}

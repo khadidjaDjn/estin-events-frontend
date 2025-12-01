@@ -1,0 +1,240 @@
+.add-event-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f5f3ff;
+  font-family: "Inter", sans-serif;
+  padding: 40px 20px;
+}
+
+.add-event-container {
+  max-width: 800px;
+  width: 100%;
+  background: white;
+  padding: 40px 30px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.15);
+}
+
+.add-event-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #8b5cf6;
+}
+
+.add-event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.add-event-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #4b5563;
+  font-size: 16px;
+}
+
+.add-event-form input,
+.add-event-form textarea,
+.add-event-form select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  margin-top: 6px;
+  transition: 0.2s;
+}
+
+.add-event-form input:focus,
+.add-event-form textarea:focus,
+.add-event-form select:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+}
+
+.date-time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.organizers-section,
+.registration-form-section {
+  margin-top: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.organizers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.organizer-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.organizer-card input[type="text"],
+.organizer-card select {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 0;
+  min-height: 41px;
+}
+
+.file-upload-label {
+  display: inline-block;
+  position: relative;
+  height: auto;
+  cursor: pointer;
+}
+
+.file-upload-btn {
+  display: block;
+  padding: 8px 10px;
+  background: #e0dbfc;
+  color: #6d28d9;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.file-upload-btn:hover {
+  background: #d6c7fa;
+}
+
+.file-upload-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.btn-add {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  transition: background 0.2s;
+}
+
+.btn-add:hover {
+  background: #6d28d9;
+}
+
+.btn-delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #e11d48;
+  transition: color 0.2s;
+}
+
+.btn-delete:hover {
+  color: #991b34;
+}
+
+.btn-submit {
+  padding: 12px 20px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s;
+}
+
+.btn-submit:hover {
+  background: #6d28d9;
+}
+
+.field-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+  margin-top: 15px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.field-card label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.field-card input[type="text"],
+.field-card input[type="radio"],
+.field-card input[type="checkbox"] {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.field-card input[type="radio"],
+.field-card input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.options-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed #c0b0f7;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+.option-editing-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.option-editing-row input[type="text"] {
+  flex-grow: 1;
+}
