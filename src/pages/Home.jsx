@@ -1,59 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import EventCard from "../components/EventCard";
 import "../styles/Home.css";
 
 const Home = () => {
-  const events = [
-    {
-      id: 1,
-      title: "Open Day ESTIN",
-      date: "2025-12-01",
-      location: "ESTIN Campus",
-      image: "/assets/images/event.png",
-      club: { name: "ESTIN Student Club", logo: "/assets/images/club1.png" },
-      rating: 4.8
-    },
-    {
-      id: 2,
-      title: "Tech Workshop",
-      date: "2025-12-05",
-      location: "Room 101",
-      image: "/assets/images/work.jpg",
-      club: { name: "AI & Robotics Club", logo: "/assets/images/club2.png" },
-      rating: 4.5
-    },
-    {
-      id: 3,
-      title: "Hackathon 2025",
-      date: "2025-12-20",
-      location: "Innovation Lab",
-      image: "/assets/images/gdsc.png",
-      club: { name: "GDSC ESTIN", logo: "/assets/images/club3.png" },
-      rating: 4.9
-    },
-    {
-      id: 4,
-      title: "Tech Workshop",
-      date: "2025-12-05",
-      location: "Room 101",
-      image: "/assets/images/work.jpg",
-      club: { name: "AI & Robotics Club", logo: "/assets/images/club2.png" },
-      rating: 4.2
-    },
-    {
-      id: 5,
-      title: "Tech Workshop",
-      date: "2025-12-05",
-      location: "Room 101",
-      image: "/assets/images/work.jpg",
-      club: { name: "AI & Robotics Club", logo: "/assets/images/club2.png" },
-      rating: 4.6
-    },
-  ];
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [popularEvents, setPopularEvents] = useState([]);
+  const [recentEvents, setRecentEvents] = useState([]);
 
-  // Sort events by rating and date
-  const mostRated = [...events].sort((a, b) => b.rating - a.rating).slice(0, 3);
-  const mostRecent = [...events].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+  useEffect(() => {
+    // Fetch upcoming events
+    axios.get("http://localhost:5000/api/events/upcoming")
+      .then(res => setUpcomingEvents(res.data))
+      .catch(err => console.error(err));
+
+    // Fetch popular events
+    axios.get("http://localhost:5000/api/events/popular")
+      .then(res => setPopularEvents(res.data))
+      .catch(err => console.error(err));
+
+    // Fetch recent/done events (most recent)
+    axios.get("http://localhost:5000/api/events/done")
+      .then(res => {
+        const sorted = res.data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+        setRecentEvents(sorted.slice(0, 3));
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <div className="home-container">
@@ -65,8 +38,8 @@ const Home = () => {
         </p>
       </div>
       <div className="events-grid">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
+        {upcomingEvents.map((event) => (
+          <EventCard key={event.eventId} event={event} />
         ))}
       </div>
 
@@ -75,8 +48,8 @@ const Home = () => {
         <h2 className="home-title">Popular Events</h2>
       </div>
       <div className="events-grid">
-        {mostRated.map((event) => (
-          <EventCard key={event.id} event={event} />
+        {popularEvents.map((event) => (
+          <EventCard key={event.eventId} event={event} />
         ))}
       </div>
 
@@ -85,8 +58,8 @@ const Home = () => {
         <h2 className="home-title">New Events</h2>
       </div>
       <div className="events-grid">
-        {mostRecent.map((event) => (
-          <EventCard key={event.id} event={event} />
+        {recentEvents.map((event) => (
+          <EventCard key={event.eventId} event={event} />
         ))}
       </div>
     </div>
