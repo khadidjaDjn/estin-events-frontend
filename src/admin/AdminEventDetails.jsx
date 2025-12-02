@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-
-import { Calendar, Clock, MapPin, Users, Star, ArrowLeft, Edit, Trash2, Download, Share2, Mail, Phone, Image as ImageIcon, MessageSquare } from 'lucide-react';
+import '../styles/AdminEventDetails.css';
+import { Calendar, Clock, MapPin, Users, Star, ArrowLeft, Edit, Trash2, Download, Share2, Mail, Phone, Image as ImageIcon, MessageSquare, UserCheck, Menu, UserPlus } from 'lucide-react'; // <-- ADD UserCheck icon
 import AdminNavbar from './AdminNavbar';
+import { useNavigate } from 'react-router-dom'; // <-- NEW IMPORT
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const navigate = useNavigate(); // <-- Initialize useNavigate
 
   // Mock event data - replace with actual data from your backend
   const event = {
@@ -50,167 +52,95 @@ const EventDetails = () => {
       attended: 120,
       feedbackSubmitted: 45,
       averageRating: 4.7
-    }
+    },
+    // NEW MOCK DATA FOR ATTENDEES
+    attendeesList: [
+      { id: 101, name: "Amine Cherif", email: "amine.c@mail.com", registrationDate: "2024-11-01" },
+      { id: 102, name: "Nour El Houda", email: "nour.h@mail.com", registrationDate: "2024-11-05" },
+      { id: 103, name: "Samir Bouzid", email: "samir.b@mail.com", registrationDate: "2024-11-08" },
+      { id: 104, name: "Dalila Ouali", email: "dalila.o@mail.com", registrationDate: "2024-11-10" },
+      { id: 105, name: "Bilal Khelifi", email: "bilal.k@mail.com", registrationDate: "2024-11-15" },
+    ]
   };
 
-  const getStatusColor = (status) => {
+  const getStatusClass = (status) => {
     switch(status) {
-      case 'upcoming': return { bg: '#dbeafe', color: '#1e40af', border: '#93c5fd' };
-      case 'ongoing': return { bg: '#dcfce7', color: '#15803d', border: '#86efac' };
-      case 'done': return { bg: '#f3e8ff', color: '#6d28d9', border: '#c4b5fd' };
-      default: return { bg: '#f1f5f9', color: '#475569', border: '#cbd5e1' };
+      case 'upcoming': return 'status-upcoming';
+      case 'ongoing': return 'status-ongoing';
+      case 'done': return 'status-done';
+      default: return 'status-default';
     }
   };
 
-  const statusStyle = getStatusColor(event.status);
+  const statusClass = getStatusClass(event.status);
   const attendanceRate = ((event.attendees / event.capacity) * 100).toFixed(0);
 
+  // Dynamic bar chart height for Attended (80% for Registered is constant)
+  const attendedBarHeight = `${attendanceRate}%`;
+  const feedbackBarHeight = `${(event.stats.feedbackSubmitted / event.stats.totalRegistrations) * 100}%`;
+  const handleViewDemands = () => {
+    console.log(event.id)
+      navigate(`/admin/events/${event.id}/particDemands`);
+  };
+
   return (
-    <div style={{ 
-      display: 'flex',
-      minHeight: '100vh',
-      background: '#f8fafc',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    }}>
+    <div className="event-details-page">
       <AdminNavbar />
-      
-      <div style={{ 
-        flex: 1,
-        marginLeft: '240px'
-      }}>
+
+      <div className="content-area">
         {/* Header with Cover Image */}
-        <div style={{ position: 'relative', height: '400px', overflow: 'hidden' }}>
+        <div className="cover-header">
           <img 
             src={event.coverImage} 
             alt={event.title}
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'cover',
-              filter: 'brightness(0.7)'
-            }}
+            className="cover-image"
           />
           
           {/* Overlay Content */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: '2rem',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-            color: 'white'
-          }}>
+          <div className="cover-overlay">
             <button
               onClick={() => window.history.back()}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: 'rgba(255, 255, 255, 0.2)',
-                backdropFilter: 'blur(10px)',
-                border: 'none',
-                padding: '0.75rem 1.25rem',
-                borderRadius: '8px',
-                color: 'white',
-                cursor: 'pointer',
-                fontSize: '0.95rem',
-                fontWeight: '500',
-                marginBottom: '1rem',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+              className="back-button"
             >
               <ArrowLeft size={20} />
               Back to Events
             </button>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+            <div className="header-info-bar">
               <div>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.75rem' }}>
-                  <div style={{
-                    padding: '0.4rem 1rem',
-                    background: statusStyle.bg,
-                    color: statusStyle.color,
-                    borderRadius: '20px',
-                    fontSize: '0.75rem',
-                    fontWeight: '700',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                <div className="tags-container">
+                  <div className={`tag status-tag ${statusClass}`}>
                     {event.status}
                   </div>
-                  <div style={{
-                    padding: '0.4rem 1rem',
-                    background: 'rgba(109, 40, 217, 0.9)',
-                    borderRadius: '20px',
-                    fontSize: '0.75rem',
-                    fontWeight: '600'
-                  }}>
+                  <div className="tag category-tag">
                     {event.category}
                   </div>
                 </div>
-                <h1 style={{ fontSize: '2.5rem', fontWeight: '700', margin: '0 0 0.5rem 0' }}>
+                <h1 className="event-title">
                   {event.title}
                 </h1>
-                <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', fontSize: '0.95rem', opacity: 0.95 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div className="event-meta">
+                  <div className="meta-item">
                     <Calendar size={18} />
                     <span>{event.date}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div className="meta-item">
                     <Clock size={18} />
                     <span>{event.time}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div className="meta-item">
                     <MapPin size={18} />
                     <span>{event.location}</span>
                   </div>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    backdropFilter: 'blur(10px)',
-                    border: 'none',
-                    padding: '0.75rem 1.25rem',
-                    borderRadius: '8px',
-                    color: 'white',
-                    cursor: 'pointer',
-                    fontSize: '0.95rem',
-                    fontWeight: '500',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
-                >
+              <div className="header-actions">
+                <button className="action-button secondary-action">
                   <Share2 size={18} />
                   Share
                 </button>
-                <button
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    background: '#6d28d9',
-                    border: 'none',
-                    padding: '0.75rem 1.25rem',
-                    borderRadius: '8px',
-                    color: 'white',
-                    cursor: 'pointer',
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = '#5b21b6'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = '#6d28d9'}
-                >
+                <button className="action-button primary-action">
                   <Edit size={18} />
                   Edit Event
                 </button>
@@ -220,63 +150,42 @@ const EventDetails = () => {
         </div>
 
         {/* Stats Bar */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '1px',
-          background: '#e2e8f0',
-          borderBottom: '1px solid #e2e8f0'
-        }}>
-          <div style={{ background: 'white', padding: '1.5rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#6d28d9', marginBottom: '0.25rem' }}>
+        <div className="stats-bar">
+          <div className="stat-card">
+            <div className="stat-value purple-text">
               {event.stats.totalRegistrations}
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: '500' }}>Total Registrations</div>
+            <div className="stat-label">Total Registrations</div>
           </div>
-          <div style={{ background: 'white', padding: '1.5rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#6d28d9', marginBottom: '0.25rem' }}>
+          <div className="stat-card">
+            <div className="stat-value purple-text">
               {event.stats.attended}
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: '500' }}>Attended</div>
+            <div className="stat-label">Attended</div>
           </div>
-          <div style={{ background: 'white', padding: '1.5rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#6d28d9', marginBottom: '0.25rem' }}>
+          <div className="stat-card">
+            <div className="stat-value purple-text">
               {attendanceRate}%
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: '500' }}>Attendance Rate</div>
+            <div className="stat-label">Attendance Rate</div>
           </div>
-          <div style={{ background: 'white', padding: '1.5rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#6d28d9', marginBottom: '0.25rem' }}>
+          <div className="stat-card">
+            <div className="stat-value purple-text">
               {event.stats.averageRating}
-              <Star size={20} style={{ display: 'inline', marginLeft: '0.25rem', fill: '#fbbf24', color: '#fbbf24' }} />
+              <Star size={20} className="star-icon" />
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: '500' }}>Average Rating</div>
+            <div className="stat-label">Average Rating</div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div style={{
-          background: 'white',
-          borderBottom: '1px solid #e2e8f0',
-          padding: '0 2rem'
-        }}>
-          <div style={{ display: 'flex', gap: '2rem' }}>
-            {['overview', 'organizers', 'gallery', 'reviews'].map(tab => (
-              <button
+        <div className="tabs-container">
+          <div className="tabs-bar">
+            {['overview', 'attendees', 'organizers', 'gallery', 'reviews'].map(tab => (
+              <button // <-- ADDED 'attendees' TO THE MAP
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                style={{
-                  padding: '1rem 0',
-                  background: 'none',
-                  border: 'none',
-                  borderBottom: activeTab === tab ? '3px solid #6d28d9' : '3px solid transparent',
-                  color: activeTab === tab ? '#6d28d9' : '#64748b',
-                  fontSize: '0.95rem',
-                  fontWeight: activeTab === tab ? '600' : '500',
-                  cursor: 'pointer',
-                  textTransform: 'capitalize',
-                  transition: 'all 0.2s ease'
-                }}
+                className={`tab-button ${activeTab === tab ? 'active-tab' : ''}`}
               >
                 {tab}
               </button>
@@ -285,97 +194,59 @@ const EventDetails = () => {
         </div>
 
         {/* Content Area */}
-        <div style={{ padding: '2rem' }}>
+        <div className="content-padding">
           {activeTab === 'overview' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+            <div className="overview-grid">
               {/* Description */}
               <div>
-                <div style={{
-                  background: 'white',
-                  padding: '2rem',
-                  borderRadius: '12px',
-                  border: '1px solid #e2e8f0',
-                  marginBottom: '2rem'
-                }}>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', margin: '0 0 1rem 0' }}>
+                <div className="card description-card">
+                  <h2 className="card-title">
                     About This Event
                   </h2>
-                  <p style={{ color: '#475569', lineHeight: '1.7', margin: '0 0 1.5rem 0' }}>
+                  <p className="description-text">
                     {event.description}
                   </p>
                   
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1e293b', margin: '2rem 0 1rem 0' }}>
+                  <h3 className="highlight-title">
                     Event Highlights
                   </h3>
-                  <ul style={{ color: '#475569', lineHeight: '1.8', paddingLeft: '1.5rem' }}>
+                  <ul className="highlight-list">
                     {event.highlights.map((highlight, index) => (
-                      <li key={index} style={{ marginBottom: '0.5rem' }}>{highlight}</li>
+                      <li key={index} className="highlight-item">{highlight}</li>
                     ))}
                   </ul>
                 </div>
 
                 {/* Attendance Chart */}
-                <div style={{
-                  background: 'white',
-                  padding: '2rem',
-                  borderRadius: '12px',
-                  border: '1px solid #e2e8f0'
-                }}>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1e293b', margin: '0 0 1.5rem 0' }}>
+                <div className="card attendance-chart-card">
+                  <h3 className="chart-title">
                     Attendance Overview
                   </h3>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem', height: '200px' }}>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                      <div style={{ 
-                        background: 'linear-gradient(to top, #6d28d9, #a78bfa)',
-                        height: '80%',
-                        borderRadius: '8px 8px 0 0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontWeight: '600',
-                        fontSize: '1.25rem'
-                      }}>
+                  <div className="bar-chart-container">
+                    {/* Registered Bar */}
+                    <div className="bar-chart-column">
+                      <div className="bar registered-bar" style={{ height: '80%' }}>
                         150
                       </div>
-                      <div style={{ textAlign: 'center', marginTop: '0.5rem', color: '#64748b', fontSize: '0.875rem' }}>
+                      <div className="bar-label">
                         Registered
                       </div>
                     </div>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                      <div style={{ 
-                        background: 'linear-gradient(to top, #6d28d9, #8b5cf6)',
-                        height: `${attendanceRate}%`,
-                        borderRadius: '8px 8px 0 0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontWeight: '600',
-                        fontSize: '1.25rem'
-                      }}>
+                    {/* Attended Bar */}
+                    <div className="bar-chart-column">
+                      <div className="bar attended-bar" style={{ height: attendedBarHeight }}>
                         120
                       </div>
-                      <div style={{ textAlign: 'center', marginTop: '0.5rem', color: '#64748b', fontSize: '0.875rem' }}>
+                      <div className="bar-label">
                         Attended
                       </div>
                     </div>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                      <div style={{ 
-                        background: 'linear-gradient(to top, #6d28d9, #c4b5fd)',
-                        height: '30%',
-                        borderRadius: '8px 8px 0 0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontWeight: '600',
-                        fontSize: '1.25rem'
-                      }}>
+                    {/* Feedback Bar */}
+                    <div className="bar-chart-column">
+                      <div className="bar feedback-bar" style={{ height: feedbackBarHeight }}>
                         45
                       </div>
-                      <div style={{ textAlign: 'center', marginTop: '0.5rem', color: '#64748b', fontSize: '0.875rem' }}>
+                      <div className="bar-label">
                         Feedback
                       </div>
                     </div>
@@ -386,93 +257,21 @@ const EventDetails = () => {
               {/* Sidebar */}
               <div>
                 {/* Quick Actions */}
-                <div style={{
-                  background: 'white',
-                  padding: '1.5rem',
-                  borderRadius: '12px',
-                  border: '1px solid #e2e8f0',
-                  marginBottom: '1.5rem'
-                }}>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1e293b', margin: '0 0 1rem 0' }}>
+                <div className="card sidebar-card">
+                  <h3 className="sidebar-title">
                     Quick Actions
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <button style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.75rem',
-                      padding: '0.875rem',
-                      background: '#f8fafc',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '8px',
-                      color: '#475569',
-                      cursor: 'pointer',
-                      fontSize: '0.95rem',
-                      fontWeight: '500',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#6d28d9';
-                      e.currentTarget.style.color = 'white';
-                      e.currentTarget.style.borderColor = '#6d28d9';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#f8fafc';
-                      e.currentTarget.style.color = '#475569';
-                      e.currentTarget.style.borderColor = '#e2e8f0';
-                    }}>
+                  <div className="quick-actions-container">
+                    <button className="action-button-sidebar primary-sidebar-action">
                       <Download size={18} />
                       Export Attendees
                     </button>
-                    <button style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.75rem',
-                      padding: '0.875rem',
-                      background: '#f8fafc',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '8px',
-                      color: '#475569',
-                      cursor: 'pointer',
-                      fontSize: '0.95rem',
-                      fontWeight: '500',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#6d28d9';
-                      e.currentTarget.style.color = 'white';
-                      e.currentTarget.style.borderColor = '#6d28d9';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#f8fafc';
-                      e.currentTarget.style.color = '#475569';
-                      e.currentTarget.style.borderColor = '#e2e8f0';
-                    }}>
-                      <MessageSquare size={18} />
-                      View Feedback
+                    <button className="action-button-sidebar primary-sidebar-action"
+                    onClick={handleViewDemands}>
+                      <UserPlus size={18} />
+                      Attending demands
                     </button>
-                    <button style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.75rem',
-                      padding: '0.875rem',
-                      background: '#fef2f2',
-                      border: '1px solid #fecaca',
-                      borderRadius: '8px',
-                      color: '#dc2626',
-                      cursor: 'pointer',
-                      fontSize: '0.95rem',
-                      fontWeight: '500',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#dc2626';
-                      e.currentTarget.style.color = 'white';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#fef2f2';
-                      e.currentTarget.style.color = '#dc2626';
-                    }}>
+                    <button className="action-button-sidebar delete-action">
                       <Trash2 size={18} />
                       Delete Event
                     </button>
@@ -480,27 +279,22 @@ const EventDetails = () => {
                 </div>
 
                 {/* Event Details Card */}
-                <div style={{
-                  background: 'white',
-                  padding: '1.5rem',
-                  borderRadius: '12px',
-                  border: '1px solid #e2e8f0'
-                }}>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1e293b', margin: '0 0 1rem 0' }}>
+                <div className="card sidebar-card">
+                  <h3 className="sidebar-title">
                     Event Details
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div>
-                      <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.25rem' }}>Capacity</div>
-                      <div style={{ fontSize: '1rem', fontWeight: '600', color: '#1e293b' }}>{event.capacity} people</div>
+                  <div className="detail-list">
+                    <div className="detail-item">
+                      <div className="detail-label">Capacity</div>
+                      <div className="detail-value">{event.capacity} people</div>
                     </div>
-                    <div>
-                      <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.25rem' }}>Status</div>
-                      <div style={{ fontSize: '1rem', fontWeight: '600', color: '#1e293b', textTransform: 'capitalize' }}>{event.status}</div>
+                    <div className="detail-item">
+                      <div className="detail-label">Status</div>
+                      <div className="detail-value capitalize-text">{event.status}</div>
                     </div>
-                    <div>
-                      <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.25rem' }}>Duration</div>
-                      <div style={{ fontSize: '1rem', fontWeight: '600', color: '#1e293b' }}>8 hours</div>
+                    <div className="detail-item">
+                      <div className="detail-label">Duration</div>
+                      <div className="detail-value">8 hours</div>
                     </div>
                   </div>
                 </div>
@@ -508,65 +302,81 @@ const EventDetails = () => {
             </div>
           )}
 
+          {/* NEW ATTENDEES TAB CONTENT */}
+          {activeTab === 'attendees' && (
+            <div className="card full-width-card">
+              <div className="attendees-header">
+                <h2 className="section-title">
+                  <UserCheck size={24} className="icon-margin-right" />
+                  Confirmed Attendees ({event.attendeesList.length})
+                </h2>
+                <button className="action-button primary-action">
+                    <Download size={18} />
+                    Export List (CSV)
+                </button>
+              </div>
+
+              <div className="attendees-table-container">
+                <table className="attendees-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Registration Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {event.attendeesList.map(attendee => (
+                      <tr key={attendee.id}>
+                        <td>{attendee.id}</td>
+                        <td className="attendee-name">{attendee.name}</td>
+                        <td>{attendee.email}</td>
+                        <td>{attendee.registrationDate}</td>
+                        <td>
+                          <button className="table-action-button email-action">
+                            <Mail size={16} />
+                          </button>
+                          <button className="table-action-button delete-action">
+                            <Trash2 size={16} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'organizers' && (
-            <div style={{
-              background: 'white',
-              padding: '2rem',
-              borderRadius: '12px',
-              border: '1px solid #e2e8f0'
-            }}>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', margin: '0 0 1.5rem 0' }}>
+            <div className="card full-width-card">
+              <h2 className="section-title">
                 Event Organizers
               </h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+              <div className="organizers-grid">
                 {event.organizers.map(organizer => (
-                  <div key={organizer.id} style={{
-                    padding: '1.5rem',
-                    background: '#f8fafc',
-                    borderRadius: '12px',
-                    border: '1px solid #e2e8f0',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#6d28d9';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(109, 40, 217, 0.1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#e2e8f0';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                      <div style={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #6d28d9, #a78bfa)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontSize: '1.25rem',
-                        fontWeight: '600'
-                      }}>
+                  <div key={organizer.id} className="organizer-card">
+                    <div className="organizer-header">
+                      <div className="organizer-avatar">
                         {organizer.avatar}
                       </div>
                       <div>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1e293b', margin: '0 0 0.25rem 0' }}>
+                        <h3 className="organizer-name">
                           {organizer.name}
                         </h3>
-                        <p style={{ fontSize: '0.875rem', color: '#6d28d9', margin: 0, fontWeight: '500' }}>
+                        <p className="organizer-role">
                           {organizer.role}
                         </p>
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', fontSize: '0.875rem' }}>
+                    <div className="organizer-contact">
+                      <div className="contact-item">
                         <Mail size={16} />
                         <span>{organizer.email}</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', fontSize: '0.875rem' }}>
+                      <div className="contact-item">
                         <Phone size={16} />
                         <span>{organizer.phone}</span>
                       </div>
@@ -578,98 +388,62 @@ const EventDetails = () => {
           )}
 
           {activeTab === 'gallery' && (
-  <div style={{
-    background: 'white',
-    padding: '2rem',
-    borderRadius: '12px',
-    border: '1px solid #e2e8f0'
-  }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', margin: 0 }}>
-        Event Gallery
-      </h2>
-      <button style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.75rem 1.25rem',
-        background: '#6d28d9',
-        color: 'white',
-        border: 'none',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        fontSize: '0.95rem',
-        fontWeight: '600',
-        transition: 'all 0.2s ease'
-      }}
-      onMouseEnter={(e) => e.currentTarget.style.background = '#5b21b6'}
-      onMouseLeave={(e) => e.currentTarget.style.background = '#6d28d9'}>
-        <ImageIcon size={18} />
-        Add Photos
-      </button>
-    </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-      {event.gallery.map((img, index) => (
-        <img
-          key={index}
-          src={img}
-          alt={`Gallery ${index + 1}`}
-          style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
-        />
-      ))}
-    </div>
-  </div>
-)}
-
-{activeTab === 'reviews' && (
-  <div style={{
-    background: 'white',
-    padding: '2rem',
-    borderRadius: '12px',
-    border: '1px solid #e2e8f0'
-  }}>
-    <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', margin: '0 0 1.5rem 0' }}>
-      Reviews
-    </h2>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {event.reviews.map(review => (
-        <div key={review.id} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-          <div style={{
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #6d28d9, #a78bfa)',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: '600'
-          }}>
-            {review.avatar}
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: 0 }}>{review.name}</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                {Array.from({ length: review.rating }).map((_, i) => (
-                  <Star key={i} size={16} style={{ fill: '#fbbf24', color: '#fbbf24' }} />
+            <div className="card full-width-card">
+              <div className="gallery-header">
+                <h2 className="section-title">
+                  Event Gallery
+                </h2>
+                <button className="add-photos-button">
+                  <ImageIcon size={18} />
+                  Add Photos
+                </button>
+              </div>
+              <div className="gallery-grid">
+                {event.gallery.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`Gallery ${index + 1}`}
+                    className="gallery-image"
+                  />
                 ))}
               </div>
             </div>
-            <p style={{ fontSize: '0.875rem', color: '#475569', margin: '0.25rem 0' }}>{review.comment}</p>
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{review.date}</span>
-          </div>
+          )}
+
+          {activeTab === 'reviews' && (
+            <div className="card full-width-card">
+              <h2 className="section-title">
+                Reviews
+              </h2>
+              <div className="reviews-list">
+                {event.reviews.map(review => (
+                  <div key={review.id} className="review-item">
+                    <div className="review-avatar">
+                      {review.avatar}
+                    </div>
+                    <div className="review-content">
+                      <div className="review-header">
+                        <h3 className="reviewer-name">{review.name}</h3>
+                        <div className="review-rating">
+                          {Array.from({ length: review.rating }).map((_, i) => (
+                            <Star key={i} size={16} className="star-filled" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="review-comment">{review.comment}</p>
+                      <span className="review-date">{review.date}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
-      ))}
+      </div>
     </div>
-  </div>
-)}
-
-  </div>
-  </div>
-</div>
-
-);
+  );
 };
 
 export default EventDetails;

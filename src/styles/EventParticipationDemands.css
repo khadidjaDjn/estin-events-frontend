@@ -1,0 +1,343 @@
+/* General Page Layout */
+.demands-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Light background */
+}
+
+.demands-page .content-area {
+    flex-grow: 1;
+    padding: 30px;
+    margin-left: 250px; /* Assuming AdminNavbar is fixed on the left */
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.page-title {
+    font-size: 2em;
+    font-weight: 700;
+    color: #343a40;
+    display: flex;
+    align-items: center;
+}
+
+.page-subtitle {
+    color: #6c757d;
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+.icon-margin-right {
+    margin-right: 12px;
+    color: var(--primary-color, #6a1b9a);
+}
+
+/* Card Styling (Reusing aesthetics) */
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.demands-page .full-width-card {
+    /* Ensures the card uses available space */
+}
+
+/* Table Section Header */
+.demands-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.demands-table-header .section-title {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+/* Table Styling */
+.demands-table-container {
+    overflow-x: auto;
+}
+
+.demands-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95em;
+    min-width: 800px; 
+}
+
+.demands-table th,
+.demands-table td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.demands-table th {
+    background-color: #f4f6f9;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.demands-table tbody tr:hover {
+    background-color: #f9f9ff;
+}
+
+.demand-name {
+    font-weight: 500;
+    color: var(--primary-color, #6a1b9a);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 0;
+    font-size: 1.1em;
+    color: #888;
+}
+
+/* Table Action Buttons */
+.action-column {
+    white-space: nowrap; 
+    width: 1%; 
+}
+
+.table-action-button {
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    margin-right: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.table-action-button:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table-action-button.view-action {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.table-action-button.accept-action {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.table-action-button.refuse-action {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* --- MODAL STYLES (AnswerModal Component) --- */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; /* Prevents shrinking */
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.modal-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+}
+
+.modal-body {
+    padding: 20px 30px;
+    overflow-y: auto; 
+    flex-grow: 1;
+}
+
+.demand-review-intro {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #ffeeba;
+    margin-bottom: 20px;
+}
+
+.answer-detail-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f7f7f9;
+    border-left: 5px solid #007bff; /* Blue accent for clarity */
+    border-radius: 4px;
+}
+
+.answer-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #343a40;
+    font-size: 1em;
+}
+
+.required-star {
+    color: #dc3545;
+    margin-left: 4px;
+}
+
+.answer-text {
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+    white-space: pre-wrap; /* Preserves formatting for textarea */
+}
+
+/* Styles for Checkbox/Radio answers (Dynamic Rendering) */
+.answer-options-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.answer-options-list li {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    border: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+/* Checkbox specific styling */
+.answer-options-list li.checked {
+    background-color: #eaf7ed;
+    border-color: #28a745;
+    color: #28a745;
+    font-weight: 600;
+}
+
+.answer-options-list li.unchecked {
+    background-color: #fff;
+    border-color: #ddd;
+    color: #888;
+}
+
+.answer-options-list .unchecked-icon {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+/* Radio specific styling */
+.radio-dot {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.radio-dot.checked-dot {
+    border-color: #6a1b9a; /* Primary color for selection */
+    background-color: #6a1b9a;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.modal-footer .action-button {
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.modal-footer .secondary-action {
+    background-color: #f0f0f0;
+    color: #333;
+}
+.modal-footer .secondary-action:hover {
+    background-color: #e0e0e0;
+}
+
+.modal-footer .accept-action {
+    background-color: #28a745;
+    color: white;
+}
+.modal-footer .accept-action:hover {
+    background-color: #218838;
+}
+
+.modal-footer .refuse-action {
+    background-color: #dc3545;
+    color: white;
+}
+.modal-footer .refuse-action:hover {
+    background-color: #c82333;
+}
