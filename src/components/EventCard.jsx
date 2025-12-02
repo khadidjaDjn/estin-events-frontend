@@ -17,6 +17,9 @@ const EventCard = ({ event }) => {
         <p className="event-info">
           {event.date} • {event.location}
         </p>
+        {event.club && (
+          <p className="event-club">Club: {event.club.name}</p>
+        )}
 
         <Link to={`/event/${event.id}`}>
           <button className="btn-details">See Details</button>

@@ -5,6 +5,7 @@
   box-shadow: 0 6px 18px rgba(0,0,0,0.1);
   transition: 0.3s ease;
   cursor: pointer;
+  width: 300px;
 }
 
 .event-card:hover {
@@ -51,4 +52,11 @@
 
 .btn-details:hover {
   background: #6d28d9;
+}
+
+.event-club {
+  color: #8b5cf6; /* purple to match theme */
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  font-weight: 500;
 }

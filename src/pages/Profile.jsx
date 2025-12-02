@@ -1,181 +1,177 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-} from "recharts";
+import { Mail, Phone, Users, Calendar, MapPin, Info } from "lucide-react";
 
 const Profile = () => {
-  // Stats
-  const stats = [
-    { title: "Total Events", value: 156, change: "+12%" },
-    { title: "Total Attendees", value: 3245, change: "+18%" },
-    { title: "Active Events", value: 24, change: "8 this week" },
-    { title: "Avg. Rating", value: 4.7, change: "+0.3" },
-  ];
+  const [activeTab, setActiveTab] = useState("overview");
+  const navigate = useNavigate();
 
-  // Chart data
-  const eventsCreatedData = [
-    { month: "Jul", events: 0 },
-    { month: "Aug", events: 7 },
-    { month: "Sep", events: 14 },
-    { month: "Oct", events: 21 },
-    { month: "Nov", events: 28 },
-    { month: "Dec", events: 20 },
-  ];
+  const club = {
+    name: "AI Student Club",
+    banner:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop&auto=format",
+    logo:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=300&fit=crop&auto=format",
 
-  const totalAttendanceData = [
-    { month: "Jul", attendees: 0 },
-    { month: "Aug", attendees: 250 },
-    { month: "Sep", attendees: 500 },
-    { month: "Oct", attendees: 750 },
-    { month: "Nov", attendees: 1000 },
-    { month: "Dec", attendees: 900 },
-  ];
+    description:
+      "The AI Student Club promotes innovation in artificial intelligence by organizing hands-on workshops, competitions, coding sessions, and community events. Its goal is to empower students to learn modern AI tools such as machine learning, deep learning, computer vision, NLP, and robotics.\n\nThe club also collaborates with other local and international communities, participates in hackathons, and helps students build strong portfolios through projects and teamwork.",
 
-  const eventsByCategory = [
-    { category: "Technology", value: 35 },
-    { category: "Workshop", value: 25 },
-    { category: "Academic", value: 20 },
-    { category: "Competition", value: 12 },
-    { category: "Networking", value: 8 },
-  ];
+    founded: "2019",
+    location: "ESTIN University – Block B",
+    categories: ["AI", "Machine Learning", "Robotics", "Deep Learning"],
 
-  const COLORS = ["#8b5cf6", "#6d28d9", "#4c1d95", "#a78bfa", "#c4b5fd"];
-
-  // Recent events
-  const recentEvents = [
-    {
-      title: "AI & Machine Learning Summit 2024",
-      status: "Active",
-      date: "Dec 15, 2024",
-      attendees: 145,
-      category: "Technology",
+    contact: {
+      email: "contact@aiclub.com",
+      phone: "+213 555 123 456",
     },
-    {
-      title: "Career Development Workshop",
-      status: "Active",
-      date: "Dec 18, 2024",
-      attendees: 87,
-      category: "Workshop",
-    },
-    {
-      title: "Research Symposium 2024",
-      status: "Active",
-      date: "Dec 20, 2024",
-      attendees: 203,
-      category: "Academic",
-    },
-    {
-      title: "Startup Pitch Competition",
-      status: "Draft",
-      date: "Dec 22, 2024",
-      attendees: 156,
-      category: "Competition",
-    },
-  ];
+
+    members: [
+      { name: "Ahmed Benali", role: "President", avatar: "https://i.pravatar.cc/150?img=1" },
+      { name: "Sarah Mansouri", role: "Vice President", avatar: "https://i.pravatar.cc/150?img=5" },
+      { name: "Karim Ferhat", role: "Media Manager", avatar: "https://i.pravatar.cc/150?img=3" },
+      { name: "Nour Rahali", role: "Logistics Manager", avatar: "https://i.pravatar.cc/150?img=4" },
+    ],
+
+    events: [
+      {
+        id: 1,
+        title: "AI & Machine Learning Workshop",
+        date: "2025-03-14",
+        image:
+          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop&auto=format",
+      },
+      {
+        id: 2,
+        title: "Deep Learning Hackathon",
+        date: "2025-02-05",
+        image:
+          "https://images.unsplash.com/photo-1591453089816-0fbb971b454c?w=400&h=300&fit=crop&auto=format",
+      },
+      {
+        id: 3,
+        title: "Intro to AI – Open Session",
+        date: "2024-10-10",
+        image:
+          "https://images.unsplash.com/photo-1581090464777-5cbf39c5be1e?w=400&h=300&fit=crop&auto=format",
+      },
+    ],
+  };
+
+  const today = new Date();
+
+  const upcomingEvents = club.events.filter(
+    (e) => new Date(e.date) >= today
+  );
+
+  const pastEvents = club.events.filter(
+    (e) => new Date(e.date) < today
+  );
 
   return (
-    <div className="profile-page">
-      <h1 className="profile-title">Admin Dashboard</h1>
-      <p className="profile-subtitle">Manage events and view analytics</p>
+    <div className="club-profile">
+      {/* Banner */}
+      <div className="club-banner">
+        <img src={club.banner} className="club-banner-img" />
+        <div className="club-banner-overlay"></div>
 
-      <button className="btn-create-event">Create Event</button>
-
-      {/* Stats */}
-      <div className="stats-grid">
-        {stats.map((stat, i) => (
-          <div key={i} className="stat-card">
-            <h3>{stat.value}</h3>
-            <p>{stat.title}</p>
-            <span className="stat-change">{stat.change}</span>
-          </div>
-        ))}
+        <div className="club-profile-header">
+          <img src={club.logo} className="club-logo" />
+          <h1 className="club-title">{club.name}</h1>
+        </div>
       </div>
 
-      {/* Charts */}
-      <div className="charts-grid">
-        {/* Events Created Line Chart */}
-        <div className="chart-card">
-          <h3>Events Created (Last 6 Months)</h3>
-          <LineChart width={350} height={200} data={eventsCreatedData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="events" stroke="#8b5cf6" strokeWidth={3} />
-          </LineChart>
-        </div>
-
-        {/* Total Attendance Line Chart */}
-        <div className="chart-card">
-          <h3>Total Attendance (Last 6 Months)</h3>
-          <LineChart width={350} height={200} data={totalAttendanceData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="attendees" stroke="#6d28d9" strokeWidth={3} />
-          </LineChart>
-        </div>
-
-        {/* Events by Category Pie Chart */}
-        <div className="chart-card">
-          <h3>Events by Category</h3>
-          <PieChart width={350} height={200}>
-            <Pie
-              data={eventsByCategory}
-              dataKey="value"
-              nameKey="category"
-              cx="50%"
-              cy="50%"
-              outerRadius={70}
-              fill="#8884d8"
-              label
+      {/* Content */}
+      <div className="club-content">
+        {/* Tabs */}
+        <div className="tabs">
+          {["overview", "members", "events", "contact"].map((tab) => (
+            <button
+              key={tab}
+              className={`tab-btn ${activeTab === tab ? "active-tab" : ""}`}
+              onClick={() => setActiveTab(tab)}
             >
-              {eventsByCategory.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Legend />
-            <Tooltip />
-          </PieChart>
+              {tab}
+            </button>
+          ))}
         </div>
-      </div>
 
-      {/* Recent Events Table */}
-      <div className="recent-events">
-        <h2>Recent Events</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Event</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Attendees</th>
-              <th>Category</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentEvents.map((event, i) => (
-              <tr key={i}>
-                <td>{event.title}</td>
-                <td>{event.status}</td>
-                <td>{event.date}</td>
-                <td>{event.attendees}</td>
-                <td>{event.category}</td>
-              </tr>
+        {/* OVERVIEW */}
+        {activeTab === "overview" && (
+          <div className="overview-card">
+            <h2 className="section-title">About the Club</h2>
+            <p className="club-description">{club.description}</p>
+
+            <div className="club-info-grid">
+              <div className="info-item"><Calendar size={18}/> Founded: {club.founded}</div>
+              <div className="info-item"><MapPin size={18}/> Location: {club.location}</div>
+              <div className="info-item"><Users size={18}/> Members:  {club.members.length}</div>
+              <div className="info-item"><Info size={18}/> Fields: {club.categories.join(", ")}</div>
+            </div>
+          </div>
+        )}
+
+        {/* MEMBERS */}
+        {activeTab === "members" && (
+          <div className="members-grid">
+            {club.members.map((m, i) => (
+              <div className="member-card" key={i}>
+                <img src={m.avatar} className="member-avatar" />
+                <div>
+                  <p className="member-name">{m.name}</p>
+                  <p className="member-role">{m.role}</p>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        )}
+
+        {/* EVENTS */}
+        {activeTab === "events" && (
+          <>
+            <h2 className="section-title">Upcoming Events</h2>
+            <div className="events-grid-club">
+              {upcomingEvents.map((ev) => (
+                <div
+                  className="club-event-card"
+                  key={ev.id}
+                  onClick={() => navigate(`/event/${ev.id}`)}
+                >
+                  <img src={ev.image} className="club-event-img" />
+                  <div className="club-event-info">
+                    <p className="club-event-title">{ev.title}</p>
+                    <p className="club-event-date"><Calendar size={16} /> {ev.date}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h2 className="section-title">Past Events</h2>
+            <div className="events-grid-club">
+              {pastEvents.map((ev) => (
+                <div
+                  className="club-event-card past"
+                  key={ev.id}
+                  onClick={() => navigate(`/event/${ev.id}`)}
+                >
+                  <img src={ev.image} className="club-event-img" />
+                  <div className="club-event-info">
+                    <p className="club-event-title">{ev.title}</p>
+                    <p className="club-event-date"><Calendar size={16} /> {ev.date}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* CONTACT */}
+        {activeTab === "contact" && (
+          <div className="contact-section">
+            <div className="contact-item"><Mail /> <p>{club.contact.email}</p></div>
+            <div className="contact-item"><Phone /> <p>{club.contact.phone}</p></div>
+          </div>
+        )}
       </div>
     </div>
   );

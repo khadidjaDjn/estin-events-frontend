@@ -1,3 +1,4 @@
+/* NAVBAR CONTAINER */
 .navbar {
   width: 100%;
   padding: 15px 40px;
@@ -11,9 +12,9 @@
   z-index: 100;
 }
 
+/* LEFT */
 .nav-left {
-  display: flex;
-  align-items: center; 
+  flex: 1; /* takes space to push center to the middle */
 }
 
 .nav-logo {
@@ -22,18 +23,17 @@
   object-fit: contain;
 }
 
-.logo-text {
-  font-size: 22px;
-  font-weight: 600;
-  color: #333;
-}
-
+/* CENTER (NAV LINKS) */
 .nav-links {
+  flex: 2;
   display: flex;
+  justify-content: center;  /* centers navigation */
   list-style: none;
-  gap: 30px;
+  gap: 40px;
+  position: relative;
 }
 
+/* LINKS STYLE */
 .nav-links a {
   text-decoration: none;
   color: #444;
@@ -42,9 +42,53 @@
 }
 
 .nav-links a:hover {
-  color: #8b5cf6; /* Violet moderne */
+  color: #8b5cf6;
 }
 
+/* CLUBS DROPDOWN */
+.clubs-dropdown {
+  position: relative;
+  cursor: pointer;
+  color: #444;
+}
+
+/* DROPDOWN MENU */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%); /* center under the parent */
+  background: white;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  list-style: none;
+  width: 160px;
+  padding: 8px 0;
+  z-index: 999;
+}
+
+.dropdown-menu li {
+  padding: 10px 15px;
+  text-align: center;
+}
+
+.dropdown-menu li:hover {
+  background: #f3f3ff;
+}
+
+.clubs-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* RIGHT */
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* SIGN UP BUTTON */
 .btn-primary {
   padding: 10px 18px;
   border: none;
