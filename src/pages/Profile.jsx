@@ -18,7 +18,6 @@ const Profile = () => {
       "The AI Student Club promotes innovation in artificial intelligence by organizing hands-on workshops, competitions, coding sessions, and community events. Its goal is to empower students to learn modern AI tools such as machine learning, deep learning, computer vision, NLP, and robotics.\n\nThe club also collaborates with other local and international communities, participates in hackathons, and helps students build strong portfolios through projects and teamwork.",
 
     founded: "2019",
-    location: "ESTIN University – Block B",
     categories: ["AI", "Machine Learning", "Robotics", "Deep Learning"],
 
     contact: {
@@ -104,8 +103,6 @@ const Profile = () => {
 
             <div className="club-info-grid">
               <div className="info-item"><Calendar size={18}/> Founded: {club.founded}</div>
-              <div className="info-item"><MapPin size={18}/> Location: {club.location}</div>
-              <div className="info-item"><Users size={18}/> Members:  {club.members.length}</div>
               <div className="info-item"><Info size={18}/> Fields: {club.categories.join(", ")}</div>
             </div>
           </div>
