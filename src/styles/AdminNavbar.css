@@ -1,3 +1,29 @@
+
+
+.admin-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* space between logo and name */
+  margin-bottom: 20px; /* space before nav links */
+}
+
+.admin-logo-img {
+  height: 60px; /* bigger logo */
+  width: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-logo {
+  font-size: 1.6rem; /* bigger text */
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+
+
+
 .admin-navbar {
   width: 240px;
   height: 100vh;
@@ -38,3 +64,4 @@
   color: white;
   padding-left: 5px;
 }
+
