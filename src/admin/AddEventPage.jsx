@@ -72,6 +72,8 @@ export default function AddEventPage() {
         <h1 className="add-event-title">Add New Event</h1>
         <form className="add-event-form" onSubmit={handleSubmit}>
           <label>Event Name<input type="text" placeholder="Event name" required /></label>
+        
+          <label>Category of the event<input type="text" placeholder="Category" required /></label>       
 
           {/* Cover Image */}
           <label>Cover Image</label>
