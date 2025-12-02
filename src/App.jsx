@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import LoginModal from "./components/LoginModal"; // <-- IMPORT LOGIN MODAL
 
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
@@ -17,10 +18,16 @@ import AdminDashboard from "./admin/AdminDashboard";
 import AdminRecentEvents from "./admin/AdminRecentEvents";
 import AdminEvents from "./admin/AdminEvents";
 import AdminEventDetails from "./admin/AdminEventDetails";
-import AddEventPage from './admin/AddEventPage'
+import AddEventPage from './admin/AddEventPage';
 
 function AppContent() {
   const location = useLocation();
+
+  // State for login modal
+  const [loginOpen, setLoginOpen] = React.useState(false);
+
+  const openLogin = () => setLoginOpen(true);
+  const closeLogin = () => setLoginOpen(false);
 
   // Check if path starts with /admin
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -28,7 +35,7 @@ function AppContent() {
   return (
     <>
       {/* Show user navbar only in user pages */}
-      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && <Navbar openLogin={openLogin} />}
 
       <Routes>
         {/* USER ROUTES */}
@@ -47,6 +54,9 @@ function AppContent() {
         <Route path="/admin/events/:id" element={<AdminEventDetails />} />
         <Route path="/admin/addEvent" element={<AddEventPage />} />
       </Routes>
+
+      {/* Login Modal */}
+      {loginOpen && <LoginModal close={closeLogin} />}
 
       {/* Show footer only in user pages */}
       {!isAdminRoute && <Footer />}

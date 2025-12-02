@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ openLogin }) => {
   return (
     <nav className="navbar">
 
@@ -34,7 +34,7 @@ const Navbar = () => {
 
       {/* RIGHT */}
       <div className="nav-right">
-        <Link to="/signup" className="btn-primary">Sign In</Link>
+        <button className="btn-primary" onClick={openLogin}>Sign In</button>
       </div>
 
     </nav>
