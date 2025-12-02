@@ -1,0 +1,143 @@
+.edit-layout {
+  display: flex;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Main container */
+.edit-container {
+  flex: 1;
+  margin-left: 240px;
+  padding: 2rem 3rem;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #e2e8f0;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #cbd5e1;
+}
+
+.edit-title {
+  margin-top: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.edit-form {
+  margin-top: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Grid fields */
+.edit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.edit-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+
+.edit-input:focus {
+  border-color: #6d28d9;
+  outline: none;
+}
+
+.edit-textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  resize: vertical;
+  font-size: 0.95rem;
+}
+
+.edit-section {
+  margin-top: 1.5rem;
+}
+
+/* Cover Image Upload */
+.cover-upload {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cover-preview {
+  width: 260px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #6d28d9;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.upload-btn input {
+  display: none;
+}
+
+.upload-btn:hover {
+  background: #5b21b6;
+}
+
+/* Save Button */
+.save-btn {
+  margin-top: 2rem;
+  width: 100%;
+  background: #6d28d9;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background: #4c1d95;
+}

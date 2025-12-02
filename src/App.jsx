@@ -18,6 +18,8 @@ import AdminDashboard from "./admin/AdminDashboard";
 import AdminEvents from "./admin/AdminEvents";
 import AdminEventDetails from "./admin/AdminEventDetails";
 import AddEventPage from './admin/AddEventPage';
+import AdminEditEvent from "./admin/EditEvent";
+
 
 function AppContent() {
   const location = useLocation();
@@ -50,6 +52,7 @@ function AppContent() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/events" element={<AdminEvents />} />
         <Route path="/admin/events/:id" element={<AdminEventDetails />} />
+        <Route path="/admin/events/:id/edit" element={<AdminEditEvent />} />  
         <Route path="/admin/addEvent" element={<AddEventPage />} />
       </Routes>
 
