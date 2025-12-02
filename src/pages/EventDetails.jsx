@@ -28,7 +28,7 @@ const EventDetails = () => {
   const eventEnded = new Date(event.endDate) < now;
 
   return (
-    <div className="event-details-page">
+    <div className="event-details-pagee">
       {/* Banner */}
       <div className="banner-container">
         <img src={event.bannerImage} alt={event.title} className="banner-img" />
