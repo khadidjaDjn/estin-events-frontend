@@ -7,21 +7,21 @@ const EventCard = ({ event }) => {
     <div className="event-card">
       <div className="event-image">
         <img
-          src={event.image || "/assets/images/event.png"}
+          src={event.coverImage || "/assets/images/event.png"} // <- backend field
           alt={event.title || "event image"}
         />
       </div>
 
       <div className="event-content">
-        <h3 className="event-title">{event.title}</h3>
+        <h3 className="event-title">{event.name}</h3> {/* <- backend uses 'name' */}
         <p className="event-info">
-          {event.date} • {event.location}
+          {new Date(event.startDate).toLocaleDateString()} • {event.location}
         </p>
-        {event.club && (
-          <p className="event-club">Club: {event.club.name}</p>
+        {event.clubName && (
+          <p className="event-club">Club: {event.clubName}</p>
         )}
 
-        <Link to={`/event/${event.id}`}>
+        <Link to={`/event/${event.eventId}`}> {/* <- use eventId for route */}
           <button className="btn-details">See Details</button>
         </Link>
       </div>
