@@ -38,7 +38,7 @@ const EventDetails = () => {
 
       <div className="content-container">
         <button
-          onClick={() => navigate("/register")}
+          onClick={() => navigate(`/event/${id}/register`)}
           className="btn-register"
         >
           Register Now
@@ -139,7 +139,7 @@ const EventDetails = () => {
           <div className="sidebar">
             <h3 className="sidebar-title">Club</h3>
             <div className="club-info">
-              <img src={event.club?.logo} className="club-logo" />
+              <img src={event.club?.avatar} className="club-logo" />
               <div>
                 <p className="club-name">{event.club?.name}</p>
                 <p className="club-description">{event.club?.description}</p>

@@ -1,68 +1,113 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../styles/Register.css";
-import { useNavigate } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-  });
+  const { id } = useParams(); // from /event/:id/register
+  const [formFields, setFormFields] = useState([]);
+  const [formData, setFormData] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  // Fetch registration form from backend
+  useEffect(() => {
+    const fetchForm = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/events/${id}/registration-form`
+        );
+        console.log(res.data)
+        setFormFields(res.data);
+
+        // Initialize formData keys with empty values
+        const initialData = {};
+        res.data.forEach((f) => {
+          if (f.type === "checkbox") initialData[f.label] = [];
+          else initialData[f.label] = "";
+        });
+        setFormData(initialData);
+      } catch (err) {
+        console.error("Error fetching registration form:", err);
+      }
+    };
+    fetchForm();
+  }, [id]);
+
+  // Handle input changes
+  const handleChange = (label, value, type) => {
+    if (type === "checkbox") {
+      const arr = formData[label] || [];
+      if (arr.includes(value)) {
+        setFormData({ ...formData, [label]: arr.filter((v) => v !== value) });
+      } else {
+        setFormData({ ...formData, [label]: [...arr, value] });
+      }
+    } else {
+      setFormData({ ...formData, [label]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  // Submit registration
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Registration successful!");
-    setFormData({ fullName: "", email: "", phone: "" });
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/events/${id}/register`,
+        formData
+      );
+      alert(res.data.msg || "Registration successful!");
+      // Reset form
+      const resetData = {};
+      formFields.forEach((f) => {
+        resetData[f.label] = f.type === "checkbox" ? [] : "";
+      });
+      setFormData(resetData);
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.msg || "Registration failed!");
+    }
   };
-
-  
 
   return (
     <div className="register-page">
       <div className="register-container">
         <h1 className="register-title">Event Registration</h1>
         <form className="register-form" onSubmit={handleSubmit}>
-          <label>
-            Full Name
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-              placeholder="Enter your full name"
-            />
-          </label>
+          {formFields.map((f, i) => (
+            <div key={i} className="form-field">
+              <label>
+                {f.label} {f.required && "*"}
+              </label>
 
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="Enter your email"
-            />
-          </label>
+              {f.type === "text" && (
+                <input
+                  type="text"
+                  value={formData[f.label]}
+                  onChange={(e) => handleChange(f.label, e.target.value, f.type)}
+                  required={f.required}
+                />
+              )}
 
-          <label>
-            Phone
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Enter your phone number"
-            />
-          </label>
+              {(f.type === "radio" || f.type === "checkbox") &&
+                f.options.map((opt, idx) => (
+                  <div key={idx} className="option-row">
+                    <input
+                      type={f.type}
+                      id={`${f.label}-${idx}`}
+                      name={f.label}
+                      value={opt}
+                      checked={
+                        f.type === "checkbox"
+                          ? formData[f.label]?.includes(opt)
+                          : formData[f.label] === opt
+                      }
+                      onChange={() => handleChange(f.label, opt, f.type)}
+                      required={f.required && f.type === "radio"}
+                    />
+                    <label htmlFor={`${f.label}-${idx}`}>{opt}</label>
+                  </div>
+                ))}
+            </div>
+          ))}
 
           <button type="submit" className="btn-submit">
             Register Now
