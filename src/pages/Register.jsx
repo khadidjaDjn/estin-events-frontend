@@ -7,6 +7,7 @@ const Register = () => {
   const { id } = useParams(); // from /event/:id/register
   const [formFields, setFormFields] = useState([]);
   const [formData, setFormData] = useState({});
+  const [isClosed, setIsClosed] = useState(false);
 
   // Fetch registration form from backend
   useEffect(() => {
@@ -15,7 +16,6 @@ const Register = () => {
         const res = await axios.get(
           `http://localhost:5000/api/events/${id}/registration-form`
         );
-        console.log(res.data)
         setFormFields(res.data);
 
         // Initialize formData keys with empty values
@@ -26,7 +26,11 @@ const Register = () => {
         });
         setFormData(initialData);
       } catch (err) {
-        console.error("Error fetching registration form:", err);
+        if (err.response?.status === 404) {
+          setIsClosed(true);
+        } else {
+          console.error("Error fetching registration form:", err);
+        }
       }
     };
     fetchForm();
@@ -66,6 +70,19 @@ const Register = () => {
       alert(err.response?.data?.msg || "Registration failed!");
     }
   };
+
+  if (isClosed) {
+    return (
+      <div className="register-page">
+        <div className="register-container">
+          <h1 className="register-title">Event Registration</h1>
+          <p style={{ textAlign: "center", color: "red", marginTop: "20px" }}>
+            Event Registration is closed.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="register-page">
