@@ -10,10 +10,9 @@ const EventDetails = () => {
   const [event, setEvent] = useState(null);
   const [reviews, setReviews] = useState([]);
   const navigate = useNavigate();
-  const { id } = useParams(); // eventId from URL
+  const { id } = useParams();
 
   useEffect(() => {
-    // Fetch event details from backend
     axios.get(`http://localhost:5000/api/events/${id}`)
       .then(res => {
         setEvent(res.data);
@@ -26,6 +25,7 @@ const EventDetails = () => {
 
   const now = new Date();
   const eventEnded = new Date(event.endDate) < now;
+  const eventUpcoming = new Date(event.startDate) > now || (!eventEnded && new Date(event.startDate) <= now);
 
   return (
     <div className="event-details-pagee">
@@ -39,7 +39,8 @@ const EventDetails = () => {
       <div className="content-container">
         <button
           onClick={() => navigate(`/event/${id}/register`)}
-          className="btn-register"
+          className={`btn-register ${!eventUpcoming ? "disabled-btn" : ""}`}
+          disabled={!eventUpcoming}
         >
           Register Now
         </button>
@@ -65,7 +66,6 @@ const EventDetails = () => {
               </div>
 
               <div className="tab-content">
-                {/* Overview */}
                 {activeTab === "overview" && (
                   <div className="overview-grid">
                     <div className="overview-item">
@@ -83,7 +83,6 @@ const EventDetails = () => {
                   </div>
                 )}
 
-                {/* Gallery */}
                 {activeTab === "gallery" && (
                   <div className="gallery-grid">
                     {event.gallery?.map((img, i) => (
@@ -99,7 +98,6 @@ const EventDetails = () => {
                   </div>
                 )}
 
-                {/* Organizers */}
                 {activeTab === "organizers" && (
                   <div className="organizers-grid">
                     {event.organizers?.map((org, i) => (
@@ -114,7 +112,6 @@ const EventDetails = () => {
                   </div>
                 )}
 
-                {/* Contact */}
                 {activeTab === "contact" && (
                   <div className="contact-section">
                     {event.club?.email && (
