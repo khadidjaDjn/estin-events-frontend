@@ -46,7 +46,7 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/event/:id" element={<EventDetails />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/event/:id/register" element={<Register />} />
         <Route path="/add-review" element={<AddReview />} />
 
         {/* ADMIN ROUTES */}        
