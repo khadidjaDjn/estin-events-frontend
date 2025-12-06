@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import LoginModal from "./components/LoginModal"; // <-- IMPORT LOGIN MODAL
+import ProtectedRoute from './components/ProtectedRoute';
 
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
@@ -12,7 +13,6 @@ import Profile from "./pages/Profile";
 import EventDetails from "./pages/EventDetails";
 import Register from "./pages/Register";
 import AddReview from "./pages/AddReview";
-
 // Admin pages
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminEvents from "./admin/AdminEvents";
@@ -37,7 +37,6 @@ function AppContent() {
 
   return (
     <>
-      {/* Show user navbar only in user pages */}
       {!isAdminRoute && <Navbar openLogin={openLogin} />}
 
       <Routes>
@@ -50,14 +49,18 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/add-review" element={<AddReview />} />
 
-        {/* ADMIN ROUTES */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/events" element={<AdminEvents />} />
-        <Route path="/admin/events/:id" element={<AdminEventDetails />} />
-        <Route path="/admin/events/:id/particDemands" element={<AdminDemandsPage />} />
-        <Route path="/admin/events/:id/edit" element={<AdminEditEvent />} />  
-        <Route path="/admin/addEvent" element={<AddEventPage />} />
+        {/* ADMIN ROUTES */}        
+        <Route element={<ProtectedRoute />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/events" element={<AdminEvents />} />
+            <Route path="/admin/events/:id" element={<AdminEventDetails />} />
+            <Route path="/admin/events/:id/particDemands" element={<AdminDemandsPage />} />
+            <Route path="/admin/events/:id/edit" element={<AdminEditEvent />} />  
+            <Route path="/admin/addEvent" element={<AddEventPage />} />
+        </Route>
       </Routes>
+
+
 
       {/* Login Modal */}
       {loginOpen && <LoginModal close={closeLogin} />}
