@@ -97,23 +97,19 @@ const AdminDashboard = () => {
 
           <div className="chart-card">
             <h3>Events by Category</h3>
-            <PieChart width={350} height={200}>
-              <Pie
-                data={eventsByCategory}
-                cx="50%"
-                cy="50%"
-                outerRadius={70}
-                dataKey="value"
-                label
+            <PieChart width={350} height={250}>
+              <Pie data={eventsByCategory} cx="50%" cy="50%" outerRadius={70} dataKey="value"
+                    label={({ name, value }) => `${value}`} // or remove if you don’t want inside labels
               >
-                {eventsByCategory.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+              {eventsByCategory.map((entry, index) => (
+              <Cell key={index} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
-              <Legend />
+              <Legend formatter={(value, entry) => entry.payload.category} />
             </PieChart>
           </div>
+
         </div>
       </div>
     </div>
