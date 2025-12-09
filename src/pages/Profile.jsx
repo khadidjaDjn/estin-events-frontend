@@ -46,7 +46,7 @@ const Profile = () => {
       <div className="club-content">
         {/* Tabs */}
         <div className="tabs">
-          {["overview", "members", "events", "contact"].map((tab) => (
+          {["overview", "events", "contact"].map((tab) => (
             <button
               key={tab}
               className={`tab-btn ${activeTab === tab ? "active-tab" : ""}`}
@@ -70,20 +70,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* MEMBERS */}
-        {activeTab === "members" && (
-          <div className="members-grid">
-            {club.members && club.members.map((m, i) => (
-              <div className="member-card" key={i}>
-                <img src={m.avatar} className="member-avatar" alt={m.name} />
-                <div>
-                  <p className="member-name">{m.name}</p>
-                  <p className="member-role">{m.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* EVENTS */}
         {activeTab === "events" && (
