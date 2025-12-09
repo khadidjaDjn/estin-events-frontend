@@ -47,7 +47,7 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/event/:id/register" element={<Register />} />
-        <Route path="/add-review" element={<AddReview />} />
+        <Route path="/event/:eventId/add-review" element={<AddReview />} />
 
         {/* ADMIN ROUTES */}        
         <Route element={<ProtectedRoute />}>
