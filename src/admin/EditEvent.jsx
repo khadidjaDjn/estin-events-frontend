@@ -39,6 +39,7 @@ const EditEvent = () => {
     // After saving, navigate back
     navigate(-1);
   };
+  
 
   // Early return for missing event (optional, for UX)
   if (!location.state?.event) {

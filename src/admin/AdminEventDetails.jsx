@@ -82,6 +82,10 @@ const EventDetails = () => {
     console.log(event.id)
       navigate(`/admin/events/${event.id}/particDemands`);
   };
+  const handleEditEvent = () => {
+  navigate(`/admin/events/${event.id}/edit`, { state: { event } });
+};
+
 
   return (
     <div className="event-details-page">
@@ -140,10 +144,11 @@ const EventDetails = () => {
                   <Share2 size={18} />
                   Share
                 </button>
-                <button className="action-button primary-action">
-                  <Edit size={18} />
-                  Edit Event
-                </button>
+                <button className="action-button primary-action" onClick={handleEditEvent}>
+  <Edit size={18} />
+  Edit Event
+</button>
+
               </div>
             </div>
           </div>
