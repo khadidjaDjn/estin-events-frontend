@@ -8,10 +8,10 @@ const ROLES = [
   "Communication", "Finance", "Design", "Sponsorship", "Volunteer",
 ];
 
-// NOTE: Replace with your actual endpoint
-const API_ENDPOINT = "YOUR_POST_API_ENDPOINT"; 
-
 export default function AddEventPage() {
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   // Event Details State
   const [eventName, setEventName] = useState("");
   const [category, setCategory] = useState("");
@@ -63,57 +63,67 @@ export default function AddEventPage() {
     setFormFields(copy);
   };
 
-  // --- API Call Function using Axios ---
-  const postEvent = async (eventData) => {
-      // Axios automatically handles JSON stringification and returns the response data
-      const response = await axios.post(API_ENDPOINT, eventData, {
-        headers: {
-            'Content-Type': 'application/json',
-            // Add any required auth headers here
-        },
-      });
-      return response.data; // Axios returns the response body directly in .data
+          // 1. Retrieve the token from localStorage
+            const token = localStorage.getItem('authToken'); // Assuming 'authToken' is the key
+            const clubId = localStorage.getItem("clubId");
+
+            // 2. Check if the token exists before attempting to fetch
+            if (!token) {
+                setError("Authorization token is missing. Please log in again.");
+                setLoading(false);
+                // Optionally redirect to login here using navigate()
+                return;
+            }  // In your AddEventPage.jsx
+const API_ENDPOINT = `http://localhost:5000/api/admins/api/admin/addEvent/${clubId}`;
+
+const handleCreatorSubmit = async (e) => {
+  e.preventDefault();
+
+  // Use fixed images
+  const banner = "https://images.unsplash.com/photo-1596496356933-9b6e0b186b88?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const cover = "https://plus.unsplash.com/premium_photo-1664304168263-f18dcc6fb94a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const organizerImg = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cGVvcGxlJTIwcG9ydHJhaXR8ZW58MHx8MHx8fDA%3D";
+
+  // Make sure all organizers have this image
+  const organizersFixed = organizers.map(o => ({
+    name: o.name,
+    role: o.role,
+    avatar: organizerImg
+  }));
+
+  const eventData = {
+    title: eventName,
+    category,
+    description,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    location,
+    bannerImage: banner,
+    coverImage: cover,
+    organizers: organizersFixed,
+    customForm: formFields
   };
 
-  // --- Submission Handler ---
-  const handleCreatorSubmit = async (e) => {
-    e.preventDefault();
-    
-    for(let o of organizers){
-      if(o.role===""||o.role==="Select Role"){
-        alert(`Please select a role for all organizers.`); 
-        return;
-      }
-    }
+  try {
+    const res = await axios.post(API_ENDPOINT, eventData, {
+      headers: {
+                            // This format matches what your backend auth middleware expects: "Bearer <token>"
+                            'Authorization': `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        }
+    });
+    console.log("Event created:", res.data);
+    alert("Event created successfully!");
+    // Redirect to the club page after creation
+    window.location.href = `/profile?club=${res.data.clubId}`;
+  } catch (err) {
+    console.error(err);
+    alert("Failed to create event");
+  }
+};
 
-    // Compile event data object
-    const eventData = {
-        eventName,
-        category,
-        description,
-        startDate,
-        endDate,
-        startTime,
-        endTime,
-        location,
-        organizers,
-        customForm: formFields, 
-        coverImage: coverImage ? coverImage.name : null, // Sending filename/placeholder
-        bannerImage: bannerImage ? bannerImage.name : null // Sending filename/placeholder
-    };
-    
-    // Call the API function
-    try {
-        const result = await postEvent(eventData);
-        console.log("Event created successfully:", result);
-        alert("Event submitted successfully!");
-        // Add form reset or redirection logic here
-    } catch (error) {
-        // Axios errors are usually found in error.response
-        console.error("Error submitting event:", error.response || error);
-        alert(`Failed to submit event: ${error.response?.data?.message || error.message}`);
-    }
-  };
 
   return (
     <div className="add-event-page">

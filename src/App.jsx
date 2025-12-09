@@ -53,7 +53,7 @@ function AppContent() {
         <Route element={<ProtectedRoute />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/events" element={<AdminEvents />} />
-            <Route path="/admin/events/:id" element={<AdminEventDetails />} />
+            <Route path="/admin/events/:eventId" element={<AdminEventDetails />} />
             <Route path="/admin/events/:id/particDemands" element={<AdminDemandsPage />} />
             <Route path="/admin/events/:id/edit" element={<AdminEditEvent />} />  
             <Route path="/admin/addEvent" element={<AddEventPage />} />

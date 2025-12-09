@@ -309,7 +309,7 @@ const AdminEvents = () => {
                   e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
                   e.currentTarget.style.borderColor = '#e2e8f0';
                 }}
-                onClick={() => navigate(`/admin/events/${event._id}`)} // Use _id for navigation
+                onClick={() => navigate(`/admin/events/${event.eventId}`)} // Use _id for navigation
               >
                 {/* Status Badge */}
                 <div style={{
@@ -414,7 +414,7 @@ const AdminEvents = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); 
-                    navigate(`/admin/events/${event._id}`)
+                    navigate(`/admin/events/${event.eventId}`)
                   }}
                   style={{
                     marginTop: '1.5rem',
