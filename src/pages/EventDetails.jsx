@@ -133,7 +133,11 @@ const EventDetails = () => {
           </div>
 
           {/* RIGHT SIDE — SIDEBAR */}
-          <div className="sidebar">
+          <div
+            className="sidebar"
+            onClick={() => navigate(`/profile?club=${event.club?.id}`)}
+            style={{ cursor: "pointer" }}
+          >
             <h3 className="sidebar-title">Club</h3>
             <div className="club-info">
               <img src={event.club?.avatar} className="club-logo" />
@@ -143,7 +147,7 @@ const EventDetails = () => {
               </div>
             </div>
           </div>
-        </div>
+          </div>
 
         {/* Reviews Section */}
         <div className="reviews-section">
@@ -152,7 +156,7 @@ const EventDetails = () => {
             <button
               className={`btn-add-review ${!eventEnded ? "disabled-btn" : ""}`}
               disabled={!eventEnded}
-              onClick={() => navigate("/add-review")}
+              onClick={() => navigate(`add-review`)}
             >
               Add Review
             </button>
@@ -165,8 +169,8 @@ const EventDetails = () => {
               <div className="review-avatar">{review.name[0]}</div>
               <div>
                 <p className="review-name">{review.name}</p>
-                <p className="review-date">{review.date}</p>
-                <p className="review-text">{review.text}</p>
+                <p className="review-date">{review.date.slice(0, 10)}</p>
+                <p className="review-text">{review.comment}</p>
               </div>
             </div>
           ))}
