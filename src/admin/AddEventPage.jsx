@@ -103,7 +103,7 @@ const handleCreatorSubmit = async (e) => {
     bannerImage: banner,
     coverImage: cover,
     organizers: organizersFixed,
-    customForm: formFields
+    registrationForm: formFields
   };
 
   try {
