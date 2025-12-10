@@ -287,7 +287,7 @@ const EventDetails = () => {
           )}
 
           {/* ATTENDEES */}
-          {activeTab === 'attendees' && (
+          {/* {activeTab === 'attendees' && (
             <div className="card full-width-card">
               <div className="attendees-header">
                 <h2 className="section-title">
@@ -329,6 +329,72 @@ const EventDetails = () => {
 
                 </table>
               </div>
+            </div>
+          )} */}
+        {activeTab === 'attendees' && (
+          <div className="card full-width-card">
+            <div className="attendees-header">
+              <h2 className="section-title">
+                <UserCheck size={24} className="icon-margin-right" />
+                Participants ({(event.participants || []).length})
+              </h2>
+            </div>
+
+            <div className="attendees-table-container">
+              <table className="attendees-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    {(event.participants[0]?.answers) &&
+                      Object.keys(event.participants[0].answers).map((key) => (
+                        <th key={key}>{key}</th>
+                      ))
+                    }
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {(event.participants || []).map((p, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      {Object.values(p.answers).map((val, j) => (
+                        <td key={j}>{val}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+
+
+          {/* REVIEWS */}
+          {activeTab === 'reviews' && (
+            <div className="card full-width-card">
+              <h2 className="section-title">
+                <Star size={24} className="icon-margin-right" />
+                Reviews ({(event.reviews || []).length})
+              </h2>
+
+              {(event.reviews && event.reviews.length > 0) ? (
+                <div className="reviews-list">
+                  {event.reviews.map((r, i) => (
+                    <div key={i} className="review-item">
+                      <div className="review-header">
+                        <strong>{r.name}</strong> - <span>{new Date(r.date).toLocaleDateString()}</span>
+                        <span className="review-rating">
+                          {r.rating} <Star size={14} className="star-icon" />
+                        </span>
+                      </div>
+                      <p className="review-text">{r.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No reviews yet.</p>
+              )}
             </div>
           )}
 
