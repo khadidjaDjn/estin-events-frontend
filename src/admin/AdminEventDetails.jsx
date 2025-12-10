@@ -98,7 +98,7 @@ const EventDetails = () => {
   if (!token || !clubId) return alert("Missing auth or club info");
 
   try {
-    await axios.delete(`http://localhost:5000/api/admins/events/${clubId}/${event.eventId}`, {
+    await axios.delete(`http://localhost:5000/api/admins/api/admin/events/${clubId}/${event.eventId}/delete`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     alert("Event deleted!");
