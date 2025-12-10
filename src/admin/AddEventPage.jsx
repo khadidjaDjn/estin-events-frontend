@@ -21,6 +21,7 @@ export default function AddEventPage() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
+  const [capacity, setCapacity] = useState();
   
   const [organizers, setOrganizers] = useState([]);
   const [formFields, setFormFields] = useState([]);
@@ -100,6 +101,7 @@ const handleCreatorSubmit = async (e) => {
     startTime,
     endTime,
     location,
+    capacity,
     bannerImage: banner,
     coverImage: cover,
     organizers: organizersFixed,
@@ -117,7 +119,7 @@ const handleCreatorSubmit = async (e) => {
     console.log("Event created:", res.data);
     alert("Event created successfully!");
     // Redirect to the club page after creation
-    window.location.href = `/profile?club=${res.data.clubId}`;
+    window.location.href = `/admin/events`;
   } catch (err) {
     console.error(err);
     alert("Failed to create event");
@@ -172,6 +174,16 @@ const handleCreatorSubmit = async (e) => {
               rows={4} 
               value={description}
               onChange={e => setDescription(e.target.value)}
+            />
+          </label>
+
+          {/* Capacity */}
+          <label>Capacity
+            <input
+              type="Number" 
+              placeholder="Capacity"
+              value={capacity}
+              onChange={e => setCapacity(e.target.value)}
             />
           </label>
 

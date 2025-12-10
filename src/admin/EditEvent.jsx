@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { ArrowLeft, UploadCloud } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
+import axios from "axios";
 import "../styles/EditEvent.css";
 
 const EditEvent = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  // Get event from location.state safely
   const event = location.state?.event || {};
 
-  // Initialize form state unconditionally with safe defaults
+  const token = localStorage.getItem("authToken");
+  const clubId = localStorage.getItem("clubId");
+
   const [form, setForm] = useState({
     title: event.title || "",
     date: event.date || "",
@@ -20,39 +21,44 @@ const EditEvent = () => {
     category: event.category || "",
     capacity: event.capacity || 0,
     description: event.description || "",
-    coverImage: event.coverImage || "",
+    coverImage: event.coverImage || "https://plus.unsplash.com/premium_photo-1664304168263-f18dcc6fb94a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setForm({ ...form, coverImage: URL.createObjectURL(file) });
+    // Use fixed image only for now
+    setForm({ ...form, coverImage: "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=800&q=80" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Updated event:", form);
-    // After saving, navigate back
-    navigate(-1);
+    if (!token || !clubId) return alert("Missing auth or club info");
+    console.log(event.eventId)
+    try {
+      await axios.post(
+        `http://localhost:5000/api/admins/api/admin/events/${clubId}/${event.eventId}/edit`,
+        form,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Event updated!");
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update event");
+    }
   };
-  
 
-  // Early return for missing event (optional, for UX)
-  if (!location.state?.event) {
-    return <div style={{ padding: "2rem" }}>Event not found!</div>;
-  }
+  if (!location.state?.event) return <div style={{ padding: "2rem" }}>Event not found!</div>;
 
   return (
     <div className="edit-layout">
       <AdminNavbar />
       <div className="edit-container">
         <button className="back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={20} />
-          Back
+          <ArrowLeft size={20} /> Back
         </button>
 
         <h1 className="edit-title">Edit Event</h1>
